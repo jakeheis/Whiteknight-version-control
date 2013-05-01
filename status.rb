@@ -15,8 +15,8 @@ class StatusCommand < Command
 		tree_delta["Added"].each do |f|
 			puts "A #{f}"
 		end
-		tree_delta["Editted"].each do |f|
-			puts "E #{f}"
+		tree_delta["Modified"].each do |f|
+			puts "M #{f}"
 		end
 		tree_delta["Removed"].each do |f|
 			puts "R #{f}"

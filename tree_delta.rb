@@ -37,7 +37,7 @@ class TreeDeltaCommand
 		File.open(".wk/last_delta", "w") {|f| f.write(Time.new)}
 		# File.open(".wk/tracked_files", "w") {|f| f.write(tracked_files.join("\n"))}
 
-		return {"Added" => new_files, "Editted" => editted_files, "Removed" => deleted_files}
+		return {"Added" => new_files, "Modified" => editted_files, "Removed" => deleted_files}
 	end
 
 end
