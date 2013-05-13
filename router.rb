@@ -3,6 +3,9 @@
 require "./init"
 require "./commit"
 require "./status"
+require "./diff"
+require "./clean"
+require "./tree_delta"
 
 command_name = nil
 command_arg = ARGV[0]
@@ -13,6 +16,13 @@ elsif command_arg == "commit"
 	command_name = CommitCommand
 elsif command_arg == "status"
 	command_name = StatusCommand
+elsif command_arg == "diff"
+	command_name = DiffCommand
+elsif command_arg == "clean"
+	command_name = CleanCommand
+elsif command_arg == "delta"
+	puts TreeDeltaCommand.delta
+	exit
 end
 
 if !command_name

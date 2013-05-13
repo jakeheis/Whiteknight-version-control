@@ -4,7 +4,7 @@ require "./command"
 require "fileutils"
 
 class InitCommand < Command
-#
+
 	def help_message
 		"Intializes an empty wk repository in the current directory. No arguments should be given."
 	end
