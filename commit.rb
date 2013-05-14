@@ -14,11 +14,13 @@ class CommitCommand < Command
 	end
 
 	def execute
+		# Tree delta
 		tree_delta = TreeDeltaCommand.delta
 
 		currently_tracked = File.read(".wk/tracked_files").split("\n")
 		new_tracked = currently_tracked - tree_delta["Removed"] + tree_delta["Added"]
 
+		# Setup commit folder
 		hash_string = Time.new.to_i.to_s + ENV['LOGNAME'] + tree_delta.to_s
 		commit_hash = Digest::SHA2.new << hash_string
 
@@ -26,14 +28,25 @@ class CommitCommand < Command
 		commit_folder = ".wk/commits/"+hash
 		FileUtils.mkdir_p commit_folder
 
+		# Store stuff in commit folder
 		File.open(commit_folder+"/tree_delta", "w") {|f| f.write(JSON.dump(tree_delta))}
+
+		FullSave.save(commit_folder+"/full")
+
+		File.open(commit_folder+"/message", "w") {|f| f.write(@option_hash["-m"])} unless @option_hash["-m"].nil?
+		
+		# Update HEAD
 		FileUtils.cp(".wk/HEAD", commit_folder+"/parent")
 		File.open(".wk/HEAD", "w") {|f| f.write(hash)}
 
+		# Update other files
 		File.open(".wk/tracked_files", "w") {|f| f.write(new_tracked.join("\n"))}
 		File.open(".wk/last_commit_time", "w") {|f| f.write(Time.new)}
 
-		FullSave.save
+		# Save the full tree for later comparison
+		FullSave.save(".wk/last_full")
+
+		puts "Created commit #{hash}"
 	end
 
 end

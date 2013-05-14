@@ -6,6 +6,7 @@ require "./status"
 require "./diff"
 require "./clean"
 require "./tree_delta"
+require "./tag"
 
 command_name = nil
 command_arg = ARGV[0]
@@ -20,6 +21,8 @@ elsif command_arg == "diff"
 	command_name = DiffCommand
 elsif command_arg == "clean"
 	command_name = CleanCommand
+elsif command_arg == "tag"
+	command_name = TagCommand
 elsif command_arg == "delta"
 	puts TreeDeltaCommand.delta
 	exit

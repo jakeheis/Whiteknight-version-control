@@ -22,8 +22,6 @@ class TreeDeltaCommand
 		new_files = []
 		editted_files = []
 
-		puts "last_update #{last_updated}"
-
 		files.each do |f|
 			if !already_tracked_files.include? f
 				new_files << f

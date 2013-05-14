@@ -18,13 +18,10 @@ class DiffCommand < Command
 
 		tree_delta["Modified"].each do |f|
 			puts colorize(f, 33)
-
 			puts colorize("Editted at #{File.mtime(f)}", 33)
 
 			old_path = ".wk/last_full/#{f}"
-			old_contents = File.open(old_path, "rb").read
-			cur_contents = File.open(f, "rb").read
-			puts Diffy::Diff.new(old_contents, cur_contents)
+			puts Diffy::Diff.new(old_path, f, :source => "files", :context => 5, :allow_empty_diff => true).to_s(:color)
 		end
 	end
 

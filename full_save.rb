@@ -7,13 +7,13 @@ require "diffy"
 
 class FullSave
 
-	def FullSave.save
+	def FullSave.save(path)
 		files = []
 		files << Dir[".*"].reject {|f| f == "." || f == ".." || f == ".wk" || f == ".git"}
 		files << Dir["**/*"]
 		files.flatten!
-		FileUtils.mkdir_p(".wk/last_full")
-		FileUtils.cp_r(files, ".wk/last_full")
+		FileUtils.mkdir_p(path)
+		FileUtils.cp_r(files, path)
 	end
 
 end
