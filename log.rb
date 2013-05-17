@@ -11,7 +11,9 @@ class LogCommand < Command
 	end
 
 	def execute
-		return ApplyDeltaCommmand.apply_delta(".wk/commits/683ac4b913899676a09ee8fdc128fdb44f9b36210a1127ddb04311938e460484/deltas/commit.rb", "HEY THERE")
+		# existing = File.open(".wk/last_full/apply_delta.rb").read
+		existing = File.open("start").read
+		return ApplyDeltaCommmand.apply_delta(".wk/commits/308ab1f4f0f87673a8cdd649069aeba275f4f9b6fbb984f20ca07f134ea71968/deltas/apply_delta.rb", existing)
 
 		if @option_hash["-c"].nil?
 			count = 10000
