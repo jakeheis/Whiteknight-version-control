@@ -4,6 +4,8 @@ require "darkknight/command"
 require "darkknight/tree_delta"
 require "fileutils"
 require "darkknight/apply_delta"
+require "darkknight/commit"
+
 class LogCommand < Command
 
 	def help_message
@@ -11,25 +13,16 @@ class LogCommand < Command
 	end
 
 	def execute
-		cur_hash = File.read(".wk/HEAD")
-		return if cur_hash.length == 0
+		return unless Commit.has_head?
 
 		IO.popen("less -r --chop-long-lines -X", "w") do |f|
 
-			while true
-				commit_folder = ".wk/commits/"+cur_hash+"/"
+			commit = Commit.HEAD
 
-				if File.exists?(commit_folder+"message")
-					message = File.read(commit_folder+"message")
-				else
-					message = "(No commit message)"
-				end
+			while !commit.nil?
+				f.puts colorize(commit.short_hash, 32)+" - "+commit.message
 
-				f.puts colorize(cur_hash[0..8], 32)+" - "+message
-
-				cur_hash = File.read(commit_folder+"parent")
-
-				break if cur_hash.length == 0
+				commit = commit.parent_commit
 			end
 		end
 #

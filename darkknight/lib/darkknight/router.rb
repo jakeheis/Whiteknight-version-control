@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby 
 
 require "darkknight/init"
-require "darkknight/commit"
+require "darkknight/commit_command"
 require "darkknight/status"
 require "darkknight/diff"
 require "darkknight/clean"

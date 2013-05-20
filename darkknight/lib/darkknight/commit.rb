@@ -1,92 +1,54 @@
 #!/usr/bin/env ruby 
 
-require "darkknight/command"
-require "darkknight/tree_delta"
-require "darkknight/full_save"
-require "fileutils"
-require 'digest/sha2'
-require "json"
+class Commit
 
-class CommitCommand < Command
+	attr_reader :hash
+	attr_reader :parent
+	attr_reader :child
+	attr_reader :message
+	attr_reader :tree_delta
 
-	def help_message
-		"Commits"
-	end
+	def initialize(hash)
+		if hash.has_key?(:new)
+			
+		else
+			@hash = hash[:hash]
+			folder = ".wk/commits/#{@hash}"
 
-	def create_commit_folder
-		hash_string = Time.new.to_i.to_s + ENV['LOGNAME'] + @tree_delta.to_s
-		commit_hash = Digest::SHA2.new << hash_string
-		@hash = commit_hash.to_s
-		@commit_folder = ".wk/commits/"+@hash
-		FileUtils.mkdir_p @commit_folder
-	end
+			@parent = File.open("#{folder}/parent").read if File.exists?("#{folder}/parent") 
+			@child = File.open("#{folder}/child").read if File.exists?("#{folder}/child")
+			
+			if File.exists?("#{folder}/message")
+				@message = File.open("#{folder}/message").read
+			else
+				@message = "(No commit message)"
+			end
 
-	def save_new
-		FileUtils.mkdir @commit_folder+"/added"
-		@tree_delta["Added"].each do |f|
-			FileUtils.mkdir_p("#{@commit_folder}/added/#{File.dirname(f)}")
-			FileUtils.cp(f, "#{@commit_folder}/added/#{f}")
+			@tree_delta = JSON.parse(File.open("#{folder}/tree_delta").read)
 		end
 	end
 
-	def save_file_deltas
-		FileUtils.mkdir @commit_folder+"/deltas"
-		@tree_delta["Modified"].each do |f|			
-			old_path = ".wk/last_full/#{f}"
-			delta = Diffy::Diff.new(old_path, f, :source => "files", :context => 0, :allow_empty_diff => true, :include_diff_info => true).to_s(:text)
-			File.open("#{@commit_folder}/deltas/#{f}", "w") {|f| f.write(delta)}
-		end
+	def parent_commit
+		return nil if @parent.nil?
+		Commit.new(:hash => @parent)
 	end
 
-	def save_message
-		File.open(@commit_folder+"/message", "w") {|f| f.write(@option_hash["-m"])} unless @option_hash["-m"].nil?
+	def child_commit
+		return nil if @child.nil?
+		Commit.new(:hash => @child)
 	end
 
-	def save_tree_delta
-		File.open(@commit_folder+"/tree_delta", "w") {|f| f.write(JSON.dump(@tree_delta))}
+	def short_hash
+		@hash[0..8]
 	end
 
-	def update_head
-		unless File.exists?(".wk/HEAD")
-			File.open(".wk/HEAD", "w") {|f| f.write(@hash)}
-			return
-		end
-
-		old_head = File.open(".wk/HEAD").read
-		File.open(".wk/commits/#{old_head}/child", "w") {|f| f.write(@hash)} 
-		File.open("#{@commit_folder}/parent", "w") {|f| f.write(old_head)}
-
-		File.open(".wk/HEAD", "w") {|f| f.write(@hash)}
+	def Commit.HEAD
+		head_hash = File.read(".wk/HEAD")
+		Commit.new(:hash => head_hash)
 	end
 
-	def update_tracked
-		currently_tracked = File.read(".wk/tracked_files").split("\n")
-		new_tracked = currently_tracked - @tree_delta["Removed"] + @tree_delta["Added"]
-		File.open(".wk/tracked_files", "w") {|f| f.write(new_tracked.join("\n"))}
-	end
-
-	def execute
-		@tree_delta = TreeDeltaCommand.delta
-
-		create_commit_folder
-
-		save_new
-		save_file_deltas
-		save_message
-		save_tree_delta
-
-		FullSave.save(@commit_folder+"/full")
-
-		update_head
-
-		update_tracked
-
-		File.open(".wk/last_commit_time", "w") {|f| f.write(Time.new)}
-
-		# Save the full tree first
-		FullSave.save(".wk/last_full")
-
-		puts "Created commit #{@hash[0..8]}"
+	def Commit.has_head?
+		File.exists?(".wk/HEAD")
 	end
 
 end
