@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby 
 
-require "./command"
+require "darkknight/command"
 require "time"
 
 class TreeDeltaCommand
@@ -15,7 +15,7 @@ class TreeDeltaCommand
 
 		files = []
 		files << Dir[".*"].reject {|f| f == "." || f == ".." || f == ".wk" || f == ".git"}
-		files << Dir["**/*"]
+		files << Dir["**/*"].reject {|f| File.directory?(f)}
 		files.flatten!
 
 		tracked_files = []

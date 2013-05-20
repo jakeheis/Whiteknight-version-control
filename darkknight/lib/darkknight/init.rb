@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby 
 
-require "./command"
+require "darkknight/command"
 require "fileutils"
 
 class InitCommand < Command
@@ -18,7 +18,6 @@ class InitCommand < Command
 		File.open(".wk/tracked_files", "w") {|f| f.write("")}
 		File.open(".wk/tags", "w") {|f| f.write("")}
 		File.open(".wk/remotes", "w") {|f| f.write("")}
-		File.open(".wk/HEAD", "w") {|f| f.write("")}
 	end
 
 end

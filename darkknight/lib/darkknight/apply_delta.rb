@@ -11,57 +11,36 @@ class ApplyDeltaCommmand
 		hunks.shift # Remove first useless hunk
 
 		lines = contents.split("\n")
-		done = false
 
 		offset = 0
 		headers.zip(hunks).each do |header, hunk|
-			next if done
-			puts offset
+			lines.flatten!
 
-			# puts "HEAD #{header}"
-			# puts "HUNK #{hunk}"
 			header = DeltaHeader.new(header)
 
 			replace = []
 
 			hunk.split("\n").each do |line|
-				replace << line[1..-1] if line[0] == "+"
+				replace << line[1..-1] if line[0] == "+" && line != "\\ No newline at end of file"
 			end
 			
-			# puts "REPLACE #{replace}"
-
 			if header.from_length == 0
-				puts "INSERT"
-				lines.insert(header.from_line+1, replace)
-				offset += header.to_length-header.from_length
-				# done = true
+				lines.insert(header.from_line+1+offset, replace)
+				offset += header.to_length
 				next
 			end
 
 			if header.to_length == 0
-				puts "DELETE #{header.from_length}"
 				header.from_length.times {lines.delete_at(header.from_line+offset)}
+				offset -= header.from_length
 				next
 			end
 
-			puts "HERE"
-
-			lines[header.from_line..header.end_from-1] = replace
+			lines[header.from_line+offset..header.end_from-1+offset] = replace
 			offset += header.to_length-header.from_length
-			# puts "#{header.to_length} arg #{header.from_length}"
-			# offset += header.from_length-header.to_length
-			# if header.from_length.nil? && header.to_length.nil?
-			# 	puts "REPLACEMENT"
-			# 	lines[header.from_line.to_i-1] = replace
-			# elsif header.from_length.nil?
-
-			# end
-
-			# done = true
 		end
 
-		puts "FINAL #{lines}"
-		File.open("output", "w") {|f| f.write(lines.join("\n"))}
+		lines.join("\n")
 	end
 
 end

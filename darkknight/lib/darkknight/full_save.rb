@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby 
 
-require "./command"
-require "./tree_delta"
+require "darkknight/command"
+require "darkknight/tree_delta"
 require "fileutils"
 require "diffy"
 

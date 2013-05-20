@@ -1,0 +1,4 @@
+#!/bin/sh
+
+gem build darkknight.gemspec
+sudo gem install darkknight-0.0.1.gem
