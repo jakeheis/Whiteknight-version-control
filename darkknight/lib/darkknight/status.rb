@@ -7,7 +7,7 @@ require "fileutils"
 class StatusCommand < Command
 
 	def help_message
-		"Status"
+		"Displays the status of the current working tree"
 	end
 
 	def execute

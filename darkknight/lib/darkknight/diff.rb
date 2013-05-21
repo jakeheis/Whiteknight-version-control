@@ -8,7 +8,7 @@ require "diffy"
 class DiffCommand < Command
 
 	def help_message
-		"Diff"
+		"Outputs the diff between the files in the current working tree and the files last comitted"
 	end
 
 	def execute
@@ -28,5 +28,3 @@ class DiffCommand < Command
 	end
 
 end
-# Couple additions
-# Couple additions 2

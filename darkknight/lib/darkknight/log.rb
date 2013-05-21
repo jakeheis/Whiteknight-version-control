@@ -9,7 +9,7 @@ require "darkknight/commit"
 class LogCommand < Command
 
 	def help_message
-		"Log"
+		"Outputs a log of all commits"
 	end
 
 	def execute
