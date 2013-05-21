@@ -48,6 +48,8 @@ class CommitCommand < Command
 	end
 
 	def update_head
+
+
 		unless File.exists?(".wk/HEAD")
 			File.open(".wk/HEAD", "w") {|f| f.write(@hash)}
 			return
@@ -71,24 +73,22 @@ class CommitCommand < Command
 	end
 
 	def execute
-		c = Commit.new(:new => true)
-		return
+		# @tree_delta = TreeDeltaCommand.delta
 
-		@tree_delta = TreeDeltaCommand.delta
+		# create_commit_folder
 
-		create_commit_folder
+		# save_new
+		# save_file_deltas
+		# save_message
+		# save_tree_delta
 
-		save_new
-		save_file_deltas
-		save_message
-		save_tree_delta
-
-		update_head
-		update_tracked
+		# update_head
+		# update_tracked
 
 
+		commit = Commit.commit(@option_hash)
 
-		FullSave.save(@commit_folder+"/full")
+		FullSave.save(commit.folder+"/full")
 
 
 		File.open(".wk/last_commit_time", "w") {|f| f.write(Time.new)}
@@ -96,7 +96,7 @@ class CommitCommand < Command
 		# Save the full tree first
 		FullSave.save(".wk/last_full")
 
-		puts "Created commit #{@hash[0..8]}"
+		puts "Created commit #{commit.hash[0..8]}"
 	end
 
 end
