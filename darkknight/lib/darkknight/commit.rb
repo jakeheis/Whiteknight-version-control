@@ -95,7 +95,7 @@ class Commit
 	end
 
 	def make_new
-		@tree_delta = TreeDeltaCommand.delta
+		@tree_delta = TreeDelta.delta
 
 		hash_string = Time.new.to_i.to_s + ENV['LOGNAME'] + @tree_delta.to_s
 		commit_hash = Digest::SHA2.new << hash_string

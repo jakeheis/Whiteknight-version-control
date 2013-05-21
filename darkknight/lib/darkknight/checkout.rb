@@ -13,13 +13,20 @@ class CheckoutCommand < Command
 
 	def execute
 		return help if @args.count != 1
-		glob = Dir.glob(".wk/commits/"+@args[0]+"*")
-		return help if glob.empty?
+		if @args[0] == "HEAD"
+			checked_out_commit = Commit.HEAD
+		else
+			glob = Dir.glob(".wk/commits/"+@args[0]+"*")
+			return help if glob.empty?
 
-		commit_hash = glob[0]
+			commit_hash = glob[0]
 
-		parts = commit_hash.split("/")
-		checked_out_commit = Commit.new(parts[2])
+			parts = commit_hash.split("/")
+			checked_out_commit = Commit.new(parts[2])
+		end
+		
+		return puts "The working tree must not be dirty." if TreeDelta.dirty_tree?
+
 		full_commit = checked_out_commit.last_full_commit
 
 		full_dir = "#{full_commit.folder}/full"

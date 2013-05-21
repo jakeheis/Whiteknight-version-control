@@ -11,7 +11,7 @@ class StatusCommand < Command
 	end
 
 	def execute
-		tree_delta = TreeDeltaCommand.delta
+		tree_delta = TreeDelta.delta
 		tree_delta["Added"].each do |f|
 			puts "A #{f}"
 		end

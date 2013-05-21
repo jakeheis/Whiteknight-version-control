@@ -30,7 +30,7 @@ elsif command_arg == "log" || command_arg == "lg"
 elsif command_arg == "checkout" || command_arg == "co"
 	command_name = CheckoutCommand
 elsif command_arg == "delta"
-	puts TreeDeltaCommand.delta
+	puts TreeDelta.delta
 	exit
 end
 

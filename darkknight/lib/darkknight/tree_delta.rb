@@ -2,9 +2,11 @@
 
 require "darkknight/command"
 require "time"
+require "diffy"
 
-class TreeDeltaCommand
-	def TreeDeltaCommand.delta
+class TreeDelta
+
+	def TreeDelta.delta
 		last_updated = nil
 		already_tracked_files = []
 		if File.exists?(".wk/last_commit_time") then File.open(".wk/last_commit_time", "r") {|f| last_updated = Time.parse(f.gets)}
@@ -32,11 +34,18 @@ class TreeDeltaCommand
 			tracked_files << f
 		end
 
+		editted_files.reject! {|f| File.read(".wk/last_full/#{f}") == File.read(f)}
+
 		deleted_files = already_tracked_files
 
 		File.open(".wk/last_delta", "w") {|f| f.write(Time.new)}
 
 		return {"Added" => new_files, "Modified" => editted_files, "Removed" => deleted_files}
+	end
+
+	def TreeDelta.dirty_tree?
+		delta = TreeDelta.delta
+		delta["Added"].count !=0 || delta["Modified"].count != 0 || delta["Removed"].count != 0
 	end
 
 end

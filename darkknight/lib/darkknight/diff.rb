@@ -12,7 +12,7 @@ class DiffCommand < Command
 	end
 
 	def execute
-		tree_delta = TreeDeltaCommand.delta
+		tree_delta = TreeDelta.delta
 
 		tree_delta["Modified"].each do |f|
 			puts colorize(f, 33)
