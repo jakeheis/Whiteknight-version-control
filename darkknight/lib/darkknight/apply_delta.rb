@@ -1,9 +1,10 @@
 #!/usr/bin/env ruby 
 
-class ApplyDeltaCommmand
+class ApplyDelta
 	
-	def ApplyDeltaCommmand.apply_delta(delta_path, contents)
-		delta_contents = File.open(delta_path).read
+	def ApplyDelta.apply_delta(delta_path, file_path)
+		contents = File.read(file_path)
+		delta_contents = File.read(delta_path)
 
 		headers = []
 		delta_contents.gsub(/^@@.*@@$/) {|header| headers << header}
@@ -40,7 +41,8 @@ class ApplyDeltaCommmand
 			offset += header.to_length-header.from_length
 		end
 
-		lines.join("\n")
+		final = lines.join("\n")
+		File.open(file_path, "w") {|f| f.write(final)}
 	end
 
 end

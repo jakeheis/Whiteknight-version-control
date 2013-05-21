@@ -10,6 +10,7 @@ class Commit
 	attr_reader :message
 	attr_reader :tree_delta
 	attr_reader :folder
+	attr_reader :commit_num
 
 	def initialize(hash)
 		if hash.is_a? String
@@ -26,6 +27,8 @@ class Commit
 			end
 
 			@tree_delta = JSON.parse(File.open("#{@folder}/tree_delta").read)
+			@commit_num = File.read("#{@folder}/commit_num").to_i
+			@full_hash = File.read("#{@folder}/full_commit_hash")
 		else
 			@option_hash = hash
 			make_new
@@ -36,20 +39,27 @@ class Commit
 		@hash[0..8]
 	end
 
+	def last_full_commit
+		return self if @hash == @full_hash
+		Commit.new(@full_hash)
+	end
+
 	# Parent - Child methods
 	def make_parent_of(commit)
-		commit.parent = self
-		self.child = commit
+		puts "making #{commit.hash} par of #{self.hash}"
+		commit.parent = self.hash
+		self.child = commit.hash
 	end
 
 	def child=(commit)
-		File.open("#{@folder}/child", "w") {|f| f.write(commit.hash)}
+		File.open("#{@folder}/child", "w") {|f| f.write(commit)}
 		@child = commit
 	end
 
 	def parent=(commit)
-		File.open("#{@folder}/parent", "w") {|f| f.write(commit.hash)}
+		File.open("#{@folder}/parent", "w") {|f| f.write(commit)}
 		@parent = commit
+		puts "setting parent #{@parent}"
 	end
 
 	def parent_commit
@@ -101,6 +111,7 @@ class Commit
 
 		update_head
 		update_tracked
+		update_commit_num		
 	end
 
 	def save_new_files
@@ -144,6 +155,26 @@ class Commit
 		currently_tracked = File.read(".wk/tracked_files").split("\n")
 		new_tracked = currently_tracked - @tree_delta["Removed"] + @tree_delta["Added"]
 		File.open(".wk/tracked_files", "w") {|f| f.write(new_tracked.join("\n"))}
+	end
+
+	def update_commit_num
+		# puts "phash #{@parent} method #{parent_commit()} wit #{parent_commit}"
+		if parent_commit
+			 parent_num = parent_commit.commit_num
+		else 
+			parent_num = -1 
+		end
+
+		@commit_num = parent_num+1
+		File.open(@folder+"/commit_num", "w") {|f| f.write(@commit_num)}
+
+		if @commit_num%10 == 0
+			FullSave.save(@folder+"/full")
+			@full_hash = @hash
+		else
+			@full_hash = parent_commit.full_hash
+		end
+		File.open(@folder+"/full_commit_hash", "w") {|f| f.write(@full_hash)}		
 	end
 
 end

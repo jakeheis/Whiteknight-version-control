@@ -88,8 +88,6 @@ class CommitCommand < Command
 
 		commit = Commit.commit(@option_hash)
 
-		FullSave.save(commit.folder+"/full")
-
 
 		File.open(".wk/last_commit_time", "w") {|f| f.write(Time.new)}
 

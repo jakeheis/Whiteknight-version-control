@@ -15,19 +15,56 @@ class CheckoutCommand < Command
 		return help if @args.count != 1
 		glob = Dir.glob(".wk/commits/"+@args[0]+"*")
 		return help if glob.empty?
-		commit = glob[0]
 
-		# parent = File.open("#{commit}/parent").read
-		full = "#{commit}/full"
+		commit_hash = glob[0]
+
+		parts = commit_hash.split("/")
+		checked_out_commit = Commit.new(parts[2])
+		full_commit = checked_out_commit.last_full_commit
+
+		full_dir = "#{full_commit.folder}/full"
 		files = []
-		Dir.chdir(full) do
+		Dir.chdir(full_dir) do
 			files = Dir["**/*"].reject {|f| File.directory?(f)}
 		end
 
+		wipe_directory
 		files.each do |f|
-			FileUtils.cp("#{full}/#{f}", f)
+			FileUtils.cp("#{full_dir}/#{f}", f)
 		end
 
+		return if full_commit == checked_out_commit
+
+		commit_step = full_commit.child_commit
+		while commit_step.hash != checked_out_commit.hash
+			puts "Commit step #{commit_step.hash} trying #{checked_out_commit.hash}"
+			apply_commit(commit_step)
+			commit_step = commit_step.child_commit
+		end
+
+		apply_commit(checked_out_commit)
+
+	end
+
+	def wipe_directory
+		files = []
+		files << Dir[".*"].reject {|f| f == "." || f == ".." || f == ".wk" || f == ".git"}
+		files << Dir["**/*"].reject {|f| File.directory?(f)}
+		files.flatten!
+		files.each {|f| File.delete(f)}
+	end
+
+	def apply_commit(commit)
+		commit.tree_delta["Removed"].each do |f|
+			File.delete(f)
+		end
+		commit.tree_delta["Added"].each do |f|
+			FileUtils.mkdir_p("#{File.dirname(f)}")
+			FileUtils.cp "#{commit.folder}/added/#{f}", f
+		end
+		commit.tree_delta["Modified"].each do |f|
+			ApplyDelta.apply_delta("#{commit.folder}/deltas/#{f}", f)
+		end
 	end
 
 end
