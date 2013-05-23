@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby 
 
 require "darkknight/tree_delta"
+require 'digest/sha2'
+require "json"
 
 class Commit
 

@@ -1,10 +1,7 @@
 #!/usr/bin/env ruby 
 
-require "fileutils"
-require "darkknight/command"
-require "darkknight/tree_delta"
 require "darkknight/apply_delta"
-require "darkknight/tag"
+require "fileutils"
 
 class BuildTree
 

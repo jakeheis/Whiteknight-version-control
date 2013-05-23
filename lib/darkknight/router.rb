@@ -1,14 +1,13 @@
 #!/usr/bin/env ruby 
 
-require "darkknight/init"
-require "darkknight/commit_command"
-require "darkknight/status"
-require "darkknight/diff"
-require "darkknight/clean"
-require "darkknight/tree_delta"
-require "darkknight/tag_command"
-require "darkknight/log"
-require "darkknight/checkout"
+require "darkknight/commands/init_command"
+require "darkknight/commands/commit_command"
+require "darkknight/commands/status_command"
+require "darkknight/commands/diff_command"
+require "darkknight/commands/clean_command"
+require "darkknight/commands/tag_command"
+require "darkknight/commands/log_command"
+require "darkknight/commands/checkout_command"
 
 command_name = nil
 command_arg = ARGV[0]
@@ -29,9 +28,6 @@ elsif command_arg == "log" || command_arg == "lg"
 	command_name = LogCommand
 elsif command_arg == "checkout" || command_arg == "co"
 	command_name = CheckoutCommand
-elsif command_arg == "delta"
-	puts TreeDelta.delta
-	exit
 end
 
 if !command_name

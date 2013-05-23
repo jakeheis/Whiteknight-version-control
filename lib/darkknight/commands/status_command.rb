@@ -1,8 +1,7 @@
 #!/usr/bin/env ruby 
 
-require "darkknight/command"
+require "darkknight/commands/command"
 require "darkknight/tree_delta"
-require "fileutils"
 
 class StatusCommand < Command
 

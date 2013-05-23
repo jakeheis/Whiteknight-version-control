@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby 
 
-require "darkknight/commit"
+require "json"
 
 class Tag
 

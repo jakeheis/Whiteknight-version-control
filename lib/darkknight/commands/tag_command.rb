@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby 
 
-require "darkknight/command"
+require "darkknight/commands/command"
 require "darkknight/commit"
 require "darkknight/tag"
 

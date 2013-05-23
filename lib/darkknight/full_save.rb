@@ -1,7 +1,5 @@
 #!/usr/bin/env ruby 
 
-require "darkknight/command"
-require "darkknight/tree_delta"
 require "fileutils"
 
 class FullSave

@@ -1,8 +1,6 @@
 #!/usr/bin/env ruby 
 
-require "darkknight/command"
 require "time"
-require "diffy"
 
 class TreeDelta
 

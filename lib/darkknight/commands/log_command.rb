@@ -1,9 +1,6 @@
 #!/usr/bin/env ruby 
 
-require "darkknight/command"
-require "darkknight/tree_delta"
-require "fileutils"
-require "darkknight/apply_delta"
+require "darkknight/commands/command"
 require "darkknight/commit"
 
 class LogCommand < Command

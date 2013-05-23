@@ -1,12 +1,8 @@
 #!/usr/bin/env ruby 
 
-require "darkknight/command"
-require "darkknight/tree_delta"
+require "darkknight/commands/command"
 require "darkknight/full_save"
 require "darkknight/commit"
-require "fileutils"
-require 'digest/sha2'
-require "json"
 
 class CommitCommand < Command
 
