@@ -4,6 +4,7 @@ require "fileutils"
 require "darkknight/command"
 require "darkknight/tree_delta"
 require "darkknight/apply_delta"
+require "darkknight/tag"
 
 class CheckoutCommand < Command
 
@@ -16,15 +17,16 @@ class CheckoutCommand < Command
 		if @args[0] == "HEAD"
 			checked_out_commit = Commit.HEAD
 		else
-			glob = Dir.glob(".wk/commits/"+@args[0]+"*")
-			return help if glob.empty?
+			hash = Tag.commit_hash_for_tag(@args[0])
+			unless hash
+				hash = Commit.expand_hash(@args[0])
+			end
 
-			commit_hash = glob[0]
+			return help unless hash
 
-			parts = commit_hash.split("/")
-			checked_out_commit = Commit.new(parts[2])
+			checked_out_commit = Commit.new(hash)
 		end
-		
+
 		return puts "The working tree must not be dirty." if TreeDelta.dirty_tree?
 
 		full_commit = checked_out_commit.last_full_commit

@@ -6,7 +6,7 @@ require "darkknight/status"
 require "darkknight/diff"
 require "darkknight/clean"
 require "darkknight/tree_delta"
-require "darkknight/tag"
+require "darkknight/tag_command"
 require "darkknight/log"
 require "darkknight/checkout"
 

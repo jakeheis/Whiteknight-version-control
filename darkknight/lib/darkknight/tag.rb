@@ -1,23 +1,35 @@
 #!/usr/bin/env ruby 
 
-require "darkknight/command"
-require "fileutils"
+require "darkknight/commit"
 
-class TagCommand < Command
+class Tag
 
-	def help_message
-		"Tags the commit with the hash given in the first argument with the tag given in the second argument. Requires two arguments."
+	def Tag.tag(commit_hash, tag)
+		if File.exists?(".wk/tags") then tags = JSON.parse(File.read(".wk/tags"))
+		else tags = {} end
+
+		tags[tag] = commit_hash
+
+		File.open(".wk/tags", "w") {|f| f.write(JSON.dump(tags))}
 	end
 
-	def execute
-		return help if @args.count != 2
-		glob = Dir.glob(".wk/commits/"+@args[0]+"*")
-		return help if glob.empty?
+	def Tag.commit_hash_for_tag(tag)
+		if File.exists?(".wk/tags") then tags = JSON.parse(File.read(".wk/tags"))
+		else tags = {} end
 
-		first_path = glob[0]
-		first_hash = first_path.split(File::SEPARATOR)[2]
+		hash = tags[tag]
 
-		File.open(".wk/tags", "a") {|f| f.puts(@args[1]+" -> "+first_hash)}		
+		return hash
 	end
+
+	# def FullSave.save(path)
+	# 	files = []
+	# 	files << Dir[".*"].reject {|f| f == "." || f == ".." || f == ".wk" || f == ".git"}
+	# 	files << Dir["**/*"].reject {|f| File.directory?(f)}
+	# 	files.flatten!
+	# 	puts "FILES #{files}"
+	# 	FileUtils.mkdir_p(path)
+	# 	FileUtils.cp_r(files, path)
+	# end
 
 end

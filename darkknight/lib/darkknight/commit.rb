@@ -35,9 +35,21 @@ class Commit
 		end
 	end
 
+	# Hashes
+
 	def short_hash
 		@hash[0..8]
 	end
+
+	def Commit.expand_hash(short)
+		glob = Dir.glob(".wk/commits/"+short+"*")
+		return nil if glob.empty?
+
+		first_path = glob[0]
+		return first_path.split(File::SEPARATOR)[2]
+	end
+
+	# Last
 
 	def last_full_commit
 		return self if @hash == @full_hash
