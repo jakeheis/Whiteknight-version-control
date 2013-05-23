@@ -38,8 +38,6 @@ class TreeDelta
 
 		deleted_files = already_tracked_files
 
-		File.open(".wk/last_delta", "w") {|f| f.write(Time.new)}
-
 		return {"Added" => new_files, "Modified" => editted_files, "Removed" => deleted_files}
 	end
 

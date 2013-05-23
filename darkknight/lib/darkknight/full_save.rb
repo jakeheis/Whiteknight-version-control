@@ -3,7 +3,6 @@
 require "darkknight/command"
 require "darkknight/tree_delta"
 require "fileutils"
-require "diffy"
 
 class FullSave
 
@@ -12,9 +11,11 @@ class FullSave
 		files << Dir[".*"].reject {|f| f == "." || f == ".." || f == ".wk" || f == ".git"}
 		files << Dir["**/*"].reject {|f| File.directory?(f)}
 		files.flatten!
-		puts "FILES #{files}"
 		FileUtils.mkdir_p(path)
-		FileUtils.cp_r(files, path)
+		files.each do |f|
+			FileUtils.mkdir_p("#{path}/#{File.dirname(f)}")
+			FileUtils.cp(f, "#{path}/#{f}")
+		end
 	end
 
 end

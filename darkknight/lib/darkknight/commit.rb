@@ -11,6 +11,7 @@ class Commit
 	attr_reader :tree_delta
 	attr_reader :folder
 	attr_reader :commit_num
+	attr_reader :full_hash
 
 	def initialize(hash)
 		if hash.is_a? String
@@ -170,7 +171,6 @@ class Commit
 	end
 
 	def update_commit_num
-		# puts "phash #{@parent} method #{parent_commit()} wit #{parent_commit}"
 		if parent_commit
 			 parent_num = parent_commit.commit_num
 		else 

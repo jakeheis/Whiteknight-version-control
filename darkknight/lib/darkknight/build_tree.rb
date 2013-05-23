@@ -34,7 +34,6 @@ class BuildTree
 
 		commit_step = full_commit.child_commit
 		while commit_step.hash != @commit.hash
-			puts "Commit step #{commit_step.hash} trying #{@commit.hash}"
 			apply_commit(commit_step)
 			commit_step = commit_step.child_commit
 		end
