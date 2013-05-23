@@ -151,7 +151,7 @@ class Commit
 		FileUtils.mkdir @folder+"/deltas"
 		@tree_delta["Modified"].each do |f|
 			FileUtils.mkdir_p("#{@folder}/deltas/#{File.dirname(f)}")
-			old_path = ".wk/last_full/#{f}"
+			old_path = ".wk/compare_full/#{f}"
 			delta = Diffy::Diff.new(old_path, f, :source => "files", :context => 0, :allow_empty_diff => true, :include_diff_info => true).to_s(:text)
 			File.open("#{@folder}/deltas/#{f}", "w") {|f| f.write(delta)}
 		end

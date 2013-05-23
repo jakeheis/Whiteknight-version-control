@@ -18,7 +18,7 @@ class CommitCommand < Command
 		commit = Commit.commit(@option_hash)
 
 		File.open(".wk/last_commit_time", "w") {|f| f.write(Time.new)}
-		FullSave.save(".wk/last_full")
+		FullSave.save(".wk/compare_full")
 
 		puts "Created commit #{commit.short_hash}"
 	end

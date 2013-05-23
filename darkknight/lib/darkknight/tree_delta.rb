@@ -34,7 +34,7 @@ class TreeDelta
 			tracked_files << f
 		end
 
-		editted_files.reject! {|f| File.read(".wk/last_full/#{f}") == File.read(f)}
+		editted_files.reject! {|f| File.read(".wk/compare_full/#{f}") == File.read(f)}
 
 		deleted_files = already_tracked_files
 
