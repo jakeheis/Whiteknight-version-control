@@ -185,6 +185,8 @@ class Commit
 		if @commit_num%10 == 0
 			FullSave.save(@folder+"/full")
 			@full_hash = @hash
+
+			FileUtils.cp ".wk/tracked_files", @folder+"/tracked_files"
 		else
 			@full_hash = parent_commit.full_hash
 		end

@@ -27,15 +27,23 @@ class BuildTree
 			FileUtils.cp("#{full_dir}/#{f}", @build_directory+f)
 		end
 
-		return if full_commit == @commit
+		@tracked_files = File.read("#{full_commit.folder}/tracked_files").split("\n")
+
+		if full_commit == @commit
+			File.open(".wk/tracked_files", "w") {|f| f.write(@tracked_files.join("\n"))}
+			return
+		end
 
 		commit_step = full_commit.child_commit
 		while commit_step.hash != @commit.hash
 			apply_commit(commit_step)
 			commit_step = commit_step.child_commit
+			ptus @tracked_files
 		end
 
 		apply_commit(@commit)
+
+		File.open(".wk/tracked_files", "w") {|f| f.write(@tracked_files.join("\n"))}
 	end
 
 	def wipe_directory
@@ -51,10 +59,12 @@ class BuildTree
 	def apply_commit(commit)
 		commit.tree_delta["Removed"].each do |f|
 			File.delete(@build_directory+f)
+			@tracked_files.delete(f)
 		end
 		commit.tree_delta["Added"].each do |f|
 			FileUtils.mkdir_p(@build_directory+File.dirname(f))
 			FileUtils.cp("#{commit.folder}/added/#{f}", @build_directory+f)
+			@tracked_files << f
 		end
 		commit.tree_delta["Modified"].each do |f|
 			ApplyDelta.apply_delta("#{commit.folder}/deltas/#{f}", @build_directory+f)

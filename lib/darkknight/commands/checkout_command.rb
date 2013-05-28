@@ -33,6 +33,8 @@ class CheckoutCommand < Command
 
 		builder = BuildTree.new(".wk/compare_full/", checked_out_commit)
 		builder.build
+
+		
 	end
 
 end
