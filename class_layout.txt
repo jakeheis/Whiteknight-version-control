@@ -19,12 +19,12 @@
 - ApplyDelta
 - BuildTree
 - FullSave
-- Router
 - TreeDelta
 
--------------- Small Scripts --------------
+-------------- Scripts --------------
 
 - whiteknight.rb
+- router.rb
 
 -------------- Commandline Applications --------------
 
