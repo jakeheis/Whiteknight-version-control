@@ -1,0 +1,9 @@
+-------------- Command Application Format --------------
+
+<command_name> <arg1> <arg2> ...
+
+-------------- Examples --------------
+
+touch hello.txt
+echo "Hello"
+whiteknight init
