@@ -7,7 +7,7 @@ require "darkknight/commit"
 class CommitCommand < Command
 
 	def help_message
-		"Commits the current working tree"
+		"Commits the current working tree. Can specify an optional message with -m"
 	end
 
 	def execute
