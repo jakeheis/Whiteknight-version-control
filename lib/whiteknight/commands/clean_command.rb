@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby 
 
-require "darkknight/commands/command"
+require "whiteknight/commands/command"
 require "fileutils"
 
 class CleanCommand < Command

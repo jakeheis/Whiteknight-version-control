@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby 
 
-require "darkknight/commands/command"
-require "darkknight/commit"
+require "whiteknight/commands/command"
+require "whiteknight/commit"
 
 class LogCommand < Command
 

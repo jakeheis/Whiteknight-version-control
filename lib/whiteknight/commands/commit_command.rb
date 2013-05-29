@@ -1,8 +1,8 @@
 #!/usr/bin/env ruby 
 
-require "darkknight/commands/command"
-require "darkknight/full_save"
-require "darkknight/commit"
+require "whiteknight/commands/command"
+require "whiteknight/full_save"
+require "whiteknight/commit"
 
 class CommitCommand < Command
 

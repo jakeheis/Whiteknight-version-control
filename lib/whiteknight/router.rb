@@ -1,13 +1,13 @@
 #!/usr/bin/env ruby 
 
-require "darkknight/commands/init_command"
-require "darkknight/commands/commit_command"
-require "darkknight/commands/status_command"
-require "darkknight/commands/diff_command"
-require "darkknight/commands/clean_command"
-require "darkknight/commands/tag_command"
-require "darkknight/commands/log_command"
-require "darkknight/commands/checkout_command"
+require "whiteknight/commands/init_command"
+require "whiteknight/commands/commit_command"
+require "whiteknight/commands/status_command"
+require "whiteknight/commands/diff_command"
+require "whiteknight/commands/clean_command"
+require "whiteknight/commands/tag_command"
+require "whiteknight/commands/log_command"
+require "whiteknight/commands/checkout_command"
 
 command_name = nil
 command_arg = ARGV[0]

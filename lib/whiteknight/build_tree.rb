@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby 
 
-require "darkknight/apply_delta"
+require "whiteknight/apply_delta"
 require "fileutils"
 
 class BuildTree

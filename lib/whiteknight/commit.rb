@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby 
 
-require "darkknight/tree_delta"
+require "whiteknight/tree_delta"
 require 'digest/sha2'
 require "json"
 

@@ -1,8 +1,8 @@
 #!/usr/bin/env ruby 
 
-require "darkknight/commands/command"
-require "darkknight/commit"
-require "darkknight/tag"
+require "whiteknight/commands/command"
+require "whiteknight/commit"
+require "whiteknight/tag"
 
 class TagCommand < Command
 

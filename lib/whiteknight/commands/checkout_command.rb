@@ -1,9 +1,9 @@
 #!/usr/bin/env ruby 
 
-require "darkknight/commands/command"
-require "darkknight/tree_delta"
-require "darkknight/tag"
-require "darkknight/build_tree"
+require "whiteknight/commands/command"
+require "whiteknight/tree_delta"
+require "whiteknight/tag"
+require "whiteknight/build_tree"
 
 class CheckoutCommand < Command
 
