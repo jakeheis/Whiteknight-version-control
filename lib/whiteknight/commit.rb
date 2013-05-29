@@ -61,7 +61,6 @@ class Commit
 
 	# Parent - Child methods
 	def make_parent_of(commit)
-		puts "making #{commit.hash} par of #{self.hash}"
 		commit.parent = self.hash
 		self.child = commit.hash
 	end
@@ -74,7 +73,6 @@ class Commit
 	def parent=(commit)
 		File.open("#{@folder}/parent", "w") {|f| f.write(commit)}
 		@parent = commit
-		puts "setting parent #{@parent}"
 	end
 
 	def parent_commit

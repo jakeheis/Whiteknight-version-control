@@ -73,8 +73,6 @@ class DeltaHeader
 		@to_line = to_nums[0].to_i-1
 		@to_length = to_nums[1] ? to_nums[1].to_i : 1
 		@end_to = @to_line+@to_length
-
-		# puts "FROM LINE #{from_line} LENGTH #{from_length} #{from_length.nil?} TO LINE #{to_line} LENGTH #{to_length} #{to_length.nil?}"
 	end
 
 	def to_s

@@ -38,7 +38,6 @@ class BuildTree
 		while commit_step.hash != @commit.hash
 			apply_commit(commit_step)
 			commit_step = commit_step.child_commit
-			ptus @tracked_files
 		end
 
 		apply_commit(@commit)
