@@ -7,3 +7,5 @@
 touch hello.txt
 echo "Hello"
 whiteknight init
+whiteknight clean --all
+whiteknight commit -m "This is a commit message"
