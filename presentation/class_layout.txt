@@ -9,7 +9,7 @@
 	- Tag
 	- Checkout
 
--------------- Helper Classes --------------
+-------------- Representational Classes --------------
 
 - Commit
 - Tag
